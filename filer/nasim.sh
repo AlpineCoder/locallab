@@ -327,7 +327,7 @@ expect -c "spawn ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 aggr0name=aggr0_${nodename//-/_}
 expect -c "spawn ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no admin@$cluster_managementif_addr
-	set timeout 120
+	set timeout 300
 	expect {*?assword:} { send \"${password}\\r\" }
 	expect {${cluster_name}::>} { send \"disk assign -all true -node ${nodename}\\r\" }
 	expect {${cluster_name}::>} {
@@ -346,21 +346,6 @@ expect -c "spawn ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 	expect {${cluster_name}::>} { send \"exit\\r\" }
 	expect eof
 "
-
-#don't do any pre-configuration after system initialization
-if [[ -n "$RAW" ]]; then
-	expect -c "*?spawn ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no admin@$cluster_managementif_addr
-		set timeout 120
-		expect {*?assword:} { send \"${password}\\r\" }
-		expect {${cluster_name}::>} { send \"aggr show\\r\" }
-		expect {${cluster_name}::>} { send \"vol show\\r\" }
-		expect {${cluster_name}::>} { send \"network port show\\r\" }
-		expect {${cluster_name}::>} { send \"network interface show\\r\" }
-		expect {${cluster_name}::>} { send \"exit\\r\" }
-		expect eof
-	"
-	exit
-fi
 
 getBaseLicense() { local lf=$1; awk 'BEGIN{RS="[\x0d\x0a\x0d]"} /Cluster Base license/ {printf $NF}' $lf; }
 getFirstNodeLicenses() { local lf=$1; awk '$2 ~ /^[A-Z]{28}$/ && $2 ~ /ABG/ {print $2}' $lf | paste -sd,; }
