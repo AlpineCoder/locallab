@@ -9,8 +9,11 @@
 	<ip address='192.168.123.1' netmask='255.255.255.0'>
 		<dhcp>
 			<range start='192.168.123.2' end='192.168.123.254' />
-			<host mac="02:01:00:00:00:66" name="node.itix-dev-local.ocplocal.itix" ip="192.168.123.5" />
-			<host mac="02:01:00:00:00:67" name="node.itix-control-plane.ocplocal.itix" ip="192.168.123.6" />
+			<host mac="02:01:00:00:00:66" name="node.itix-dev-local.ocplocal.itix"
+				ip="192.168.123.5" />
+			<host mac="02:01:00:00:00:67" name="node.itix-control-plane.ocplocal.itix"
+				ip="192.168.123.6" />
+			<host mac="52:54:00:c6:ad:9c" name="alma.ocplocal.itix" ip="192.168.123.7" />
 		</dhcp>
 	</ip>
 	<dns>
@@ -24,12 +27,16 @@
 	<dnsmasq:options>
 		<!-- fix for the 5s timeout on DNS -->
 		<!-- see https://www.math.tamu.edu/~comech/tools/linux-slow-dns-lookup/ -->
-		<dnsmasq:option value="auth-server=ocplocal.itix," /> <!-- yes, there is a trailing coma -->
+		<dnsmasq:option value="auth-server=ocplocal.itix," /> <!-- yes, there is a trailing
+		coma -->
 		<dnsmasq:option value="auth-zone=ocplocal.itix" />
 		<!-- Wildcard route -->
 		<dnsmasq:option value="host-record=lb.itix-dev-local.ocplocal.itix,192.168.123.5" />
-		<dnsmasq:option value="cname=*.apps.itix-dev-local.ocplocal.itix,*.apps-ix.itix-dev-local.ocplocal.itix,lb.itix-dev-local.ocplocal.itix" />
-		<dnsmasq:option value="host-record=lb.itix-control-plane.ocplocal.itix,192.168.123.6" />
-		<dnsmasq:option value="cname=*.apps.itix-control-plane.ocplocal.itix,*.apps-ix.itix-control-plane.ocplocal.itix,lb.itix-control-plane.ocplocal.itix" />
+		<dnsmasq:option
+			value="cname=*.apps.itix-dev-local.ocplocal.itix,*.apps-ix.itix-dev-local.ocplocal.itix,lb.itix-dev-local.ocplocal.itix" />
+		<dnsmasq:option
+			value="host-record=lb.itix-control-plane.ocplocal.itix,192.168.123.6" />
+		<dnsmasq:option
+			value="cname=*.apps.itix-control-plane.ocplocal.itix,*.apps-ix.itix-control-plane.ocplocal.itix,lb.itix-control-plane.ocplocal.itix" />
 	</dnsmasq:options>
 </network>
